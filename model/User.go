@@ -2,9 +2,10 @@ package model
 
 import (
 	"ginblog/utils/errmsg"
+	"log"
+
 	"golang.org/x/crypto/bcrypt"
 	"gorm.io/gorm"
-	"log"
 )
 
 type User struct {
@@ -50,9 +51,9 @@ func CreateUser(data *User) int {
 // GetUser 查询用户
 func GetUser(id int) (User, int) {
 	var user User
-	err := db.Limit(1).Where("ID = ?", id).Find(&user).Error
+	err := db.Limit(1).Where("ID = ?", id).First(&user).Error
 	if err != nil {
-		return user, errmsg.ERROR
+		return user, errmsg.ERROR_USER_NOT_EXIST
 	}
 	return user, errmsg.SUCCSE
 }
@@ -98,7 +99,7 @@ func ChangePassword(id int, data *User) int {
 	//var user User
 	//var maps = make(map[string]interface{})
 	//maps["password"] = data.Password
-	
+
 	err = db.Select("password").Where("id = ?", id).Updates(&data).Error
 	if err != nil {
 		return errmsg.ERROR

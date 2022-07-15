@@ -4,11 +4,11 @@ import (
 	"ginblog/model"
 	"ginblog/utils/errmsg"
 	"ginblog/utils/validator"
-	"github.com/gin-gonic/gin"
 	"net/http"
 	"strconv"
-)
 
+	"github.com/gin-gonic/gin"
+)
 
 // AddUser 添加用户
 func AddUser(c *gin.Context) {
@@ -114,7 +114,7 @@ func ChangeUserPassword(c *gin.Context) {
 	var data model.User
 	id, _ := strconv.Atoi(c.Param("id"))
 	_ = c.ShouldBindJSON(&data)
-	
+
 	code := model.ChangePassword(id, &data)
 
 	c.JSON(

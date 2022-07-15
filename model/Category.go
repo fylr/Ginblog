@@ -2,6 +2,7 @@ package model
 
 import (
 	"ginblog/utils/errmsg"
+
 	"gorm.io/gorm"
 )
 
@@ -30,17 +31,18 @@ func CreateCate(data *Category) int {
 }
 
 // GetCateInfo 查询单个分类信息
-func GetCateInfo(id int) (Category,int) {
+func GetCateInfo(id int) (Category, int) {
 	var cate Category
-	db.Where("id = ?",id).First(&cate)
-	return cate,errmsg.SUCCSE
+	db.Where("id = ?", id).First(&cate)
+	return cate, errmsg.SUCCSE
 }
 
 // GetCate 查询分类列表
 func GetCate(pageSize int, pageNum int) ([]Category, int64) {
 	var cate []Category
 	var total int64
-	err = db.Find(&cate).Limit(pageSize).Offset((pageNum - 1) * pageSize).Error
+
+	err = db.Limit(pageSize).Offset((pageNum - 1) * pageSize).Find(&cate).Error
 	db.Model(&cate).Count(&total)
 	if err != nil && err != gorm.ErrRecordNotFound {
 		return nil, 0
